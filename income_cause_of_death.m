@@ -1,43 +1,14 @@
 %%
+% read from file
+LowIncomeCOD = readtable('CauseOfDeathLow.csv');
 LowerMidCOD = readtable('CauseOfDeathLowerMid.csv');
 UpperMidCOD = readtable('CauseOfDeathUpperMid.csv');
-
-% included in function
-UpperMidCOD = sortrows(UpperMidCOD,'Causes','ascend');
-LowerMidCOD = sortrows(LowerMidCOD,'Causes', 'ascend');
-LowerMidCOD = sortrows(LowerMidCOD, 'Year', 'ascend');
-UpperMidCOD = sortrows(UpperMidCOD, 'Year','ascend');
-
-%%
-% this has been written as a function, will use function instead in final
-% version
-% functioin: IncomeCODProcess
-UpperMidCOD = table2array(UpperMidCOD);
-UpperMidCOD = UpperMidCOD(strcmpi(UpperMidCOD(:, 5), 'Both sexes'), :);
-% finds data for both sexes and all ages, death per 100 000
-UpperMidCOD = UpperMidCOD(:, [3, 7, 9]);
-
-LowerMidCOD = table2array(LowerMidCOD);
-LowerMidCOD = LowerMidCOD(strcmpi(LowerMidCOD(:, 5), 'Both sexes'), :);
-
-LowerMidCOD = LowerMidCOD(:, [3, 7, 9]);
-%%
-% x = strcmpi(LowerMidCOD(:, 2), UpperMidCOD(:, 2)) & strcmpi(LowerMidCOD(:, 1), UpperMidCOD(:, 1));
-% verified data sorted correctly with disease and year
-
-%%
 HighIncomeCOD = readtable('CauseOfDeathHigh.csv');
-HighIncomeCOD = sortrows(HighIncomeCOD,'Causes', 'ascend');
-HighIncomeCOD = sortrows(HighIncomeCOD, 'Year', 'ascend');
-
-HighIncomeCOD = table2array(HighIncomeCOD);
-HighIncomeCOD = HighIncomeCOD(strcmpi(HighIncomeCOD(:, 5), 'Both sexes'), :);
-% finds data for both sexes and all ages, death per 100 000
-HighIncomeCOD = HighIncomeCOD(:, [3, 7, 9]);
-
-%%
-LowIncomeCOD = readtable('CauseOfDeathLow.csv');
-LowIncomeCOD = IncomeCODProcess(LowIncomeCOD);
+% pull death cause of both sexes, 2000 and 2010
+LowIncomeCOD = ReadIncomeCOD(LowIncomeCOD);
+LowerMidCOD = ReadIncomeCOD(LowerMidCOD);
+UpperMidCOD = ReadIncomeCOD(UpperMidCOD);
+HighIncomeCOD = ReadIncomeCOD(HighIncomeCOD);
 
 %%
 % intial visual comparison of data
