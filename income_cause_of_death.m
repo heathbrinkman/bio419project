@@ -39,6 +39,13 @@ HighIncomeCOD = HighIncomeCOD(:, [3, 7, 9]);
 LowIncomeCOD = readtable('CauseOfDeathLow.csv');
 LowIncomeCOD = IncomeCODProcess(LowIncomeCOD);
 
+%% Separate all Data by Year and remove zero values
+[LowIncomeCOD2000, LowIncomeCOD2012] = trimmedSortedCOD(LowIncomeCOD);
+[LowerMidIncomeCOD2000, LowerMidIncomeCOD2012] = trimmedSortedCOD(LowerMidCOD);
+[UpperMidIncomeCOD2000, UpperMidIncomeCOD2012] = trimmedSortedCOD(UpperMidCOD);
+[HighIncomeCOD2000, HighIncomeCOD2012] = trimmedSortedCOD(HighIncomeCOD);
+
+
 %%
 % intial visual comparison of data
 figure;
@@ -53,16 +60,25 @@ legend('lower income', 'lower mid income', 'upper mid income', 'high income');
 ylabel('deaths per 10 000 population');
 xlabel('cause, too many to display at this moment');
 
-%% work in progress
-% threshold value for significant deaths per 10 000 population needs to be
-% determined
-[row, column] = size(HighIncomeCOD);
-low = ones(row, 1);
-lmid= ones(row, 1)*2;
-umid = ones(row, 1)*3;
-high = ones(row, 1)*4;
 
-obj = fitcdiscr([str2double(LowCOD(:, 3)); 
-    str2double(LowerMidCOD(:, 3)); 
-    str2double(UpperMidCOD(:, 3)); str2double(HighIncomeCOD(:, 3))],  [low; lmid; umid; high])
+%%
+figure;
+labels = LowIncomeCOD2012(2:11, 2);
+bar(cell2mat(LowIncomeCOD2012(2:11, 3)));
+set(gca,'XTickLabel',labels)
+ax = gca;
+ax.XTickLabelRotation=90;
+ylabel('Deaths per 100,000');
+title('Top ten causes of death for low income countries');
+
+figure;
+labels = HighIncomeCOD2012(2:11, 2);
+bar(cell2mat(HighIncomeCOD2012(2:11, 3)));
+set(gca,'XTickLabel',labels)
+ax = gca;
+ax.XTickLabelRotation=90;
+ylabel('Deaths per 100,000');
+title('Top ten causes of death for high income countries');
+
+
 

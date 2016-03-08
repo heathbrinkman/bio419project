@@ -1,7 +1,6 @@
 function [IncomeCOD] = IncomeCODProcess(IncomeCOD)
 
 IncomeCOD = sortrows(IncomeCOD,'Causes','ascend');
-IncomeCOD = sortrows(IncomeCOD, 'Numeric', 'ascend');
 IncomeCOD = sortrows(IncomeCOD, 'Year', 'ascend');
 
 
