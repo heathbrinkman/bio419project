@@ -1,7 +1,6 @@
 function [IncomeCOD] = ReadIncomeCOD(IncomeCOD)
 
 IncomeCOD = sortrows(IncomeCOD,'Causes','ascend');
-IncomeCOD = sortrows(IncomeCOD, 'Numeric', 'ascend');
 IncomeCOD = sortrows(IncomeCOD, 'Year', 'ascend');
 
 % this could be written as a function
