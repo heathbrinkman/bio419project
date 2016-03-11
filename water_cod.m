@@ -46,31 +46,25 @@ empty = any(cellfun('isempty', Water), 2);
 Water(empty, :) = [];
 
 %% 
-x = str2double(Water(:, 3));
-y = str2double(Water(:, 5));
-
 figure;
 hold on;
+
+x = str2double(Water(:, 3));
+y = str2double(Water(:, 5));
+[fitresult, gof] = fit( x, y, 'poly2', 'Robust', 'Bisquare' );
+% bisquare fit, good r2 value
 plot(x, y, 'r.');
-coeffs = polyfit(x, y, 1);
-% Get fitted values
-fittedX = linspace(min(x), max(x), 200);
-fittedY = polyval(coeffs, fittedX);
-% Plot the fitted line
-plot(fittedX, fittedY, 'r-', 'LineWidth', 1);
+plot(fitresult);
 
 x = str2double(Water(:, 2));
 y = str2double(Water(:, 5));
+[fitresult, gof] = fit( x, y, 'poly2', 'Robust', 'Bisquare' );
 
 plot(x, y, 'b.');
-coeffs = polyfit(x, y, 1);
-% Get fitted values
-fittedX = linspace(min(x), max(x), 200);
-fittedY = polyval(coeffs, fittedX);
-% Plot the fitted line
-plot(fittedX, fittedY, 'b-', 'LineWidth', 1);
+plot(fitresult, 'b-');
+
 title('Communicable Diseases Death vs. % Imporved Water and Sanitation');
-legend('Sanitation', 'y = -12.12x+1184', 'Drinking Water', 'y = -18.55.12x+1896');
+legend('Sanitation', 'poly 2 bisquare fit', 'Drinking Water', 'poly 2 bisquare fit');
 xlabel('Percentage Population Using Improved Drinking Water and Sanitation');
 ylabel('Deaths per 100,000 Population from Communicable Diseases');
 %print('drinking_water_death_trend','-dpng','-r300');
