@@ -34,6 +34,7 @@ for i = 1:row,
     for a = 1:incomerow,
         if strcmpi(Water(i, 1), CountryIncome(a, 1) ) == 1,
              Water(i, 6) = CountryIncome(a, 4);
+             Water(i, 7) = CountryIncome(a, 3);
              break;
         end;
     end;
@@ -50,22 +51,40 @@ figure;
 hold on;
 
 x = str2double(Water(:, 3));
-y = str2double(Water(:, 5));
-[fitresult, gof] = fit( x, y, 'poly2', 'Robust', 'Bisquare' );
+y1 = str2double(Water(:, 5));
+data = [x, y1];
+[fitresult, gof] = fit( x, y1, 'poly2', 'Robust', 'Bisquare' );
 % bisquare fit, good r2 value
-plot(x, y, 'r.');
+plot(x, y1, 'r.');
 plot(fitresult);
+%averagebisquareErrorSanitation = polyError(data, 'poly2', 100, 0.2);
 
 x = str2double(Water(:, 2));
-y = str2double(Water(:, 5));
-[fitresult, gof] = fit( x, y, 'poly2', 'Robust', 'Bisquare' );
+y1 = str2double(Water(:, 5));
+data = [x, y1];
+[fitresult, gof] = fit( x, y1, 'poly2', 'Robust', 'Bisquare' );
 
-plot(x, y, 'b.');
+plot(x, y1, 'b.');
 plot(fitresult, 'b-');
+%averagebisquareErrorWater = polyError(data, 'poly2', 100, 0.2);
 
-title('Communicable Diseases Death vs. % Imporved Water and Sanitation');
+title('Communicable Diseases Death vs. % Improved Water and Sanitation');
 legend('Sanitation', 'poly 2 bisquare fit', 'Drinking Water', 'poly 2 bisquare fit');
 xlabel('Percentage Population Using Improved Drinking Water and Sanitation');
 ylabel('Deaths per 100,000 Population from Communicable Diseases');
 %print('drinking_water_death_trend','-dpng','-r300');
-%%
+%% Relationship between income and water quality/sanitation
+for i = 1:size(Water, 1) %removes the spaces from the income strings
+    Water{i, 7}(Water{i, 7}== ' ') = '';
+end;
+x = log(str2double(Water(:, 7)));
+y1 = str2double(Water(:, 3));
+y2 = str2double(Water(:, 2));
+plot(x, y1, 'r.', x, y2, 'b.');
+title('Country Income vs. % Improved Water and Sanitation');
+xlabel('Gross National Income per Capita (USD)(Log Scale)');
+ylabel('Percent Population With Access to Improved Water/Sanitation');
+legend('Sanitation', 'Improved Water');
+
+
+

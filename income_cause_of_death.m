@@ -78,3 +78,14 @@ ylabel('Deaths per 100,000 Population');
 
 %print('top16','-dpng','-r300'); 
 % print 300dpi figure for report/presentation
+%% Bar graph of sorted COD
+totalCOD = compiledCOD(LowIncomeCOD, MidIncomeCOD, HighIncomeCOD);
+totalCOD = flip(sortrows(totalCOD, 2));
+bar(cell2mat(totalCOD(1:10, 2:4)));
+
+ax = gca;
+ax.XTick = [1:10];
+set(gca,'XTickLabel',totalCOD(1:10, 1));
+ax.XTickLabelRotation=40;
+legend('Low Income Countries', 'Mid-Income Countries', 'High Income Countries');
+ylabel('Deaths per 100,000 Population');
