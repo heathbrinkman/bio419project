@@ -57,7 +57,7 @@ data = [x, y1];
 % bisquare fit, good r2 value
 plot(x, y1, 'r.');
 plot(fitresult);
-%averagebisquareErrorSanitation = polyError(data, 'poly2', 100, 0.2);
+averagebisquareErrorSanitation = polyError(data, 'poly2', 100, 0.2);
 
 x = str2double(Water(:, 2));
 y1 = str2double(Water(:, 5));
@@ -66,7 +66,7 @@ data = [x, y1];
 
 plot(x, y1, 'b.');
 plot(fitresult, 'b-');
-%averagebisquareErrorWater = polyError(data, 'poly2', 100, 0.2);
+averagebisquareErrorWater = polyError(data, 'poly2', 100, 0.2);
 
 title('Communicable Diseases Death vs. % Improved Water and Sanitation');
 legend('Sanitation', 'poly 2 bisquare fit', 'Drinking Water', 'poly 2 bisquare fit');
@@ -74,6 +74,8 @@ xlabel('Percentage Population Using Improved Drinking Water and Sanitation');
 ylabel('Deaths per 100,000 Population from Communicable Diseases');
 %print('drinking_water_death_trend','-dpng','-r300');
 %% Relationship between income and water quality/sanitation
+figure;
+hold on;
 for i = 1:size(Water, 1) %removes the spaces from the income strings
     Water{i, 7}(Water{i, 7}== ' ') = '';
 end;
@@ -81,10 +83,17 @@ x = log(str2double(Water(:, 7)));
 y1 = str2double(Water(:, 3));
 y2 = str2double(Water(:, 2));
 plot(x, y1, 'r.', x, y2, 'b.');
+[logFitSan, gof1] = fit(x, y1, 'poly1');
+[logFitWater, gof2] = fit(x, y2, 'poly1');
+plot(logFitSan);
+plot(logFitWater, 'b');
 title('Country Income vs. % Improved Water and Sanitation');
 xlabel('Gross National Income per Capita (USD)(Log Scale)');
 ylabel('Percent Population With Access to Improved Water/Sanitation');
-legend('Sanitation', 'Improved Water');
+legend('Sanitation', 'Improved Water', 'Log Fit Sanitation', 'Log Fit Water');
+
+%% Relationship between income an
+
 
 
 
