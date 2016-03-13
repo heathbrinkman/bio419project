@@ -23,10 +23,27 @@ end;
 data = cell2mat(malariaWater(:, 2:5));
 % data is Cases, Deaths per 100,000, Improved Drinking
 % Water percentage and income
+%figure;
+%hold on;
+%plot(data(:, 3), data(:, 1), '.');
+%[fit1, gof1] = fit(data(:, 3), data(:, 1), 'exp1', 'Robust', 'Bisquare');
+%plot(fit1);
+%error1 = polyError(data(:, [3, 1]), 'exp1', 100, 0.2);
+%%
 figure;
-plot(data((data(:, 1)~=0), 3), data((data(:, 1)~=0), 1), '.');
-figure;
-plot(data((data(:, 1)~=0), 4), data((data(:, 1)~=0), 1), '.');
+hold on;
+plot(data(:, 3), data(:, 2), '.');
+[fit2, gof2] = fit(data(:, 3), data(:, 2), 'exp1', 'Robust', 'Bisquare');
+plot(fit2);
+xlabel('Percent Population with Access to Improved Drinking Water');
+ylabel('Deaths Per 100,000 due to Malaria');
+title('Access to Improved Drinking Water vs. Malaria Death Rates');
+legend();
+%error2 = polyError(data(:, [3, 2]), 'exp1', 100, 0.2);
+
+
+
+
 
 
 
