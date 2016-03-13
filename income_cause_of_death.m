@@ -15,6 +15,12 @@ HighIncomeCOD = ReadIncomeCOD(HighIncomeCOD, year);
 % mean of each cause in lower and upper middle income countries
 MidIncomeCOD = (str2double(LowerMidCOD(:, 3)) + str2double(UpperMidCOD(:, 3)) )/2;
 
+verifymatch = strcmpi( [LowIncomeCOD(:, 2), LowIncomeCOD(:, 2), LowIncomeCOD(:, 2)], [LowerMidCOD(:, 2), UpperMidCOD(:, 2), HighIncomeCOD(:, 2)]);
+if all(verifymatch(:) == 1),
+    display('Death causes match, data sorted correctly!');
+end;
+%verified data sorted correctly with disease, all groups match
+
 
 %%
 % intial visual comparison of data
@@ -43,11 +49,6 @@ LowSortValueIndices = sortedIndex(1:10);
 
 TopDeathIndex = unique([HighSortValueIndices; MidSortValueIndices; LowSortValueIndices]);
 
-%cod(:, 1) = HighIncomeCOD(TopDeathIndex, 2);
-%cod(:, 2) = HighIncomeCOD(TopDeathIndex, 3);
-%cod(:, 3) = MidIncomeCOD(TopDeathIndex, 3);
-%cod(:, 4) = LowIncomeCOD(TopDeathIndex);
-
 %%
 stddev=[1:3, 5:158];
 % removed 'all causes'
@@ -56,8 +57,6 @@ stddev=[1:3, 5:158];
 
 figure;
 hold on;
-% [1, 2, 4, 6, 7] are some of the top communicable\infectious diseases
-
 
 errorlow = std(str2double(LowIncomeCOD(stddev, 3)) );
 errorbar(str2double(LowIncomeCOD(TopDeathIndex, 3)), errorlow*ones(size(TopDeathIndex)), 'rs-');

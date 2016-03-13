@@ -47,29 +47,22 @@ empty = any(cellfun('isempty', Water), 2);
 Water(empty, :) = [];
 
 %% 
-functions = {'poly1', 'poly2', 'poly3', 'exp1', 'exp2'};
 figure;
 hold on;
 
 x = str2double(Water(:, 3));
 y1 = str2double(Water(:, 5));
 data = [x, y1];
-errors = zeros(size(functions));
-for i = 1:numel(functions)
-    errors(i) = polyError(data, functions(i), 100, 0.2);
-end;
-
-%%
     
 [fitresult1, gof1] = fit( x, y1, 'poly1', 'Robust', 'Bisquare' );
 [fitresult2, gof2] = fit( x, y1, 'poly2', 'Robust', 'Bisquare' );
 % bisquare fit, good r2 value
 plot(x, y1, 'r.');
-plot(fitresult1);
+plot(fitresult1, 'm-');
 plot(fitresult2);
-averagebisquareErrorSanitation = polyError(data, 'poly2', 100, 0.2);
-averagebisquareErrorSanitationLinear = polyError(data, 'poly1', 100, 0.2);
-%%
+SanitationError = polyError(data, 'poly2', 30, 0.2);
+SanitationErrorLinear = polyError(data, 'poly1', 30, 0.2);
+
 x = str2double(Water(:, 2));
 y1 = str2double(Water(:, 5));
 data = [x, y1];
@@ -77,12 +70,13 @@ data = [x, y1];
 
 plot(x, y1, 'b.');
 plot(fitresult, 'b-');
-averagebisquareErrorWater = polyError(data, 'poly2', 100, 0.2);
+WaterError = polyError(data, 'poly2', 30, 0.2);
 
 title('Communicable Diseases Death vs. % Improved Water and Sanitation');
-legend('Sanitation', 'poly 2 bisquare fit', 'Drinking Water', 'poly 2 bisquare fit');
+legend('Sanitation', 'linear bisquare fit', 'poly 2 bisquare fit', 'poly 2 bisquare fit');
 xlabel('Percentage Population Using Improved Drinking Water and Sanitation');
 ylabel('Deaths per 100,000 Population from Communicable Diseases');
+display(abs([SanitationError, SanitationErrorLinear, WaterError]), 'Sanitation Poly2 fit error, sanitation linear error, water poly2 error');
 %print('drinking_water_death_trend','-dpng','-r300');
 %% Relationship between income and water quality/sanitation
 figure;
@@ -103,11 +97,6 @@ xlabel('Gross National Income per Capita (USD)(Log Scale)');
 ylabel('Percent Population With Access to Improved Water/Sanitation');
 legend('Sanitation', 'Improved Water', 'Log Fit Sanitation', 'Log Fit Water');
 
-<<<<<<< HEAD
-%% Relationship between income an
-
-
-=======
 %% PCA of Income, Water, Sanitation and Communicable Disease Death Rate
 [coeff, score, latent] = pca(str2double(Water(:, [2, 3, 5, 7])));
 figure; 
@@ -116,6 +105,6 @@ xlabel('pc1'); ylabel('pc2');
 title('Data Projected onto the Principal Component Directions'); 
 axis equal; 
 grid on;
->>>>>>> origin/master
+
 
 
