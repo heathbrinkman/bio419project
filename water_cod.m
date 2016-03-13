@@ -45,9 +45,6 @@ end;
 %%
 empty = any(cellfun('isempty', Water), 2);
 Water(empty, :) = [];
-for i = 1:size(Water, 1) %removes the spaces from the income strings
-    Water{i, 7}(Water{i, 7}== ' ') = '';
-end;
 
 %% 
 figure;
@@ -79,6 +76,9 @@ ylabel('Deaths per 100,000 Population from Communicable Diseases');
 %% Relationship between income and water quality/sanitation
 figure;
 hold on;
+for i = 1:size(Water, 1) %removes the spaces from the income strings
+    Water{i, 7}(Water{i, 7}== ' ') = '';
+end;
 x = log(str2double(Water(:, 7)));
 y1 = str2double(Water(:, 3));
 y2 = str2double(Water(:, 2));
@@ -92,14 +92,8 @@ xlabel('Gross National Income per Capita (USD)(Log Scale)');
 ylabel('Percent Population With Access to Improved Water/Sanitation');
 legend('Sanitation', 'Improved Water', 'Log Fit Sanitation', 'Log Fit Water');
 
-%% PCA of Income, Water, Sanitation and Communicable Disease Death Rate
-[coeff, score, latent] = pca(str2double(Water(:, [2, 3, 5, 7])));
-figure; 
-plot(score(:, 1), score(:, 2), '.'); 
-xlabel('pc1'); ylabel('pc2'); 
-title('Data Projected onto the Principal Component Directions'); 
-axis equal; 
-grid on;
-figure; stairs(cumsum(latent)/sum(latent));
+%% Relationship between income an
+
+
 
 
