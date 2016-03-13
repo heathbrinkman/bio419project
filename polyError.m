@@ -10,7 +10,7 @@ for i = 1:iterations
     train = permuted(ceil((numel(data(:,1))*test_frac)):end);
     regression = fit(data(train, 1), data(train, 2), fitType, 'Robust', 'Bisquare');
     for j = 1:size(test)
-        modelError = modelError+((data(test(j), 2)-regression(j)).^2)/numel(test);
+        modelError = modelError+((data(test(j), 2)-regression(j))/numel(test));
     end;
 end;
 averagePolyError = modelError/iterations;

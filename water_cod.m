@@ -50,18 +50,29 @@ for i = 1:size(Water, 1) %removes the spaces from the income strings
 end;
 
 %% 
+functions = {'poly1', 'poly2', 'poly3', 'exp1', 'exp2'};
 figure;
 hold on;
 
 x = str2double(Water(:, 3));
 y1 = str2double(Water(:, 5));
 data = [x, y1];
-[fitresult, gof] = fit( x, y1, 'poly2', 'Robust', 'Bisquare' );
+errors = zeros(size(functions));
+for i = 1:numel(functions)
+    errors(i) = polyError(data, functions(i), 100, 0.2);
+end;
+
+%%
+    
+[fitresult1, gof1] = fit( x, y1, 'poly1', 'Robust', 'Bisquare' );
+[fitresult2, gof2] = fit( x, y1, 'poly2', 'Robust', 'Bisquare' );
 % bisquare fit, good r2 value
 plot(x, y1, 'r.');
-plot(fitresult);
+plot(fitresult1);
+plot(fitresult2);
 averagebisquareErrorSanitation = polyError(data, 'poly2', 100, 0.2);
-
+averagebisquareErrorSanitationLinear = polyError(data, 'poly1', 100, 0.2);
+%%
 x = str2double(Water(:, 2));
 y1 = str2double(Water(:, 5));
 data = [x, y1];
@@ -100,6 +111,5 @@ xlabel('pc1'); ylabel('pc2');
 title('Data Projected onto the Principal Component Directions'); 
 axis equal; 
 grid on;
-figure; stairs(cumsum(latent)/sum(latent));
 
 

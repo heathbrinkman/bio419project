@@ -79,13 +79,16 @@ ylabel('Deaths per 100,000 Population');
 %print('top16','-dpng','-r300'); 
 % print 300dpi figure for report/presentation
 %% Bar graph of sorted COD
+figure;
+hold on;
 totalCOD = compiledCOD(LowIncomeCOD, MidIncomeCOD, HighIncomeCOD);
 totalCOD = flip(sortrows(totalCOD, 2));
-bar(cell2mat(totalCOD(1:10, 2:4)));
+bar(cell2mat(totalCOD(2:17, 2:4)));
 
 ax = gca;
-ax.XTick = [1:10];
-set(gca,'XTickLabel',totalCOD(1:10, 1));
+ax.XTick = [1:16];
+set(gca,'XTickLabel',totalCOD(2:17, 1));
 ax.XTickLabelRotation=40;
+title('Top 16 Causes of Death in Low, Middle and High Income Countries');
 legend('Low Income Countries', 'Mid-Income Countries', 'High Income Countries');
 ylabel('Deaths per 100,000 Population');
