@@ -52,31 +52,30 @@ hold on;
 
 x = str2double(Water(:, 3));
 y1 = str2double(Water(:, 5));
-data = [x, y1];
-    
 [fitresult1, gof1] = fit( x, y1, 'poly1', 'Robust', 'Bisquare' );
 [fitresult2, gof2] = fit( x, y1, 'poly2', 'Robust', 'Bisquare' );
-% bisquare fit, good r2 value
+
 plot(x, y1, 'r.');
 plot(fitresult1, 'm-');
 plot(fitresult2);
-SanitationError = polyError(data, 'poly2', 30, 0.2);
-SanitationErrorLinear = polyError(data, 'poly1', 30, 0.2);
+
+SanitationError = polyError([x, y1], 'poly2', 20, 0.2);
+SanitationErrorLinear = polyError([x, y1], 'poly1', 20, 0.2);
 
 x = str2double(Water(:, 2));
 y1 = str2double(Water(:, 5));
-data = [x, y1];
 [fitresult, gof] = fit( x, y1, 'poly2', 'Robust', 'Bisquare' );
 
 plot(x, y1, 'b.');
 plot(fitresult, 'b-');
-WaterError = polyError(data, 'poly2', 30, 0.2);
+
+WaterError = polyError([x, y1], 'poly2', 20, 0.2);
+display(abs([SanitationError, SanitationErrorLinear, WaterError]), 'Sanitation Poly2 fit error, sanitation linear error, water poly2 error');
 
 title('Communicable Diseases Death vs. % Improved Water and Sanitation');
 legend('Sanitation', 'linear bisquare fit', 'poly 2 bisquare fit', 'poly 2 bisquare fit');
 xlabel('Percentage Population Using Improved Drinking Water and Sanitation');
 ylabel('Deaths per 100,000 Population from Communicable Diseases');
-display(abs([SanitationError, SanitationErrorLinear, WaterError]), 'Sanitation Poly2 fit error, sanitation linear error, water poly2 error');
 %print('drinking_water_death_trend','-dpng','-r300');
 %% Relationship between income and water quality/sanitation
 figure;

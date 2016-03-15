@@ -36,7 +36,7 @@ ylabel('deaths per 10 000 population');
 xlabel('cause, too many to display at this moment');
 
 print('intial','-dpng','-r300'); 
-%%
+%% sort top death causes
 % 2012
 [sorted,sortedIndex] = sort(str2double(HighIncomeCOD(:, 3)),'descend');
 HighSortValueIndices = sortedIndex(1:10);
@@ -49,35 +49,7 @@ LowSortValueIndices = sortedIndex(1:10);
 
 TopDeathIndex = unique([HighSortValueIndices; MidSortValueIndices; LowSortValueIndices]);
 
-%%
-stddev=[1:3, 5:158];
-% removed 'all causes'
-% the stddev still will be inflated a little bit but the difference is
-% still significant for the causes we are looking at
-
-figure;
-hold on;
-
-errorlow = std(str2double(LowIncomeCOD(stddev, 3)) );
-errorbar(str2double(LowIncomeCOD(TopDeathIndex, 3)), errorlow*ones(size(TopDeathIndex)), 'rs-');
-
-errormid = std(MidIncomeCOD(stddev) );
-errorbar(MidIncomeCOD(TopDeathIndex), errormid*ones(size(TopDeathIndex)), 'b^-');
-
-errorhigh = std(str2double(HighIncomeCOD(stddev, 3)) );
-errorbar(str2double(HighIncomeCOD(TopDeathIndex, 3)), errorhigh*ones(size(TopDeathIndex)), 'go-');
-
-set(gca,'xdir','reverse')
-ax = gca;
-ax.XTick = [1:numel(TopDeathIndex)];
-set(gca,'XTickLabel',LowIncomeCOD(TopDeathIndex, 2))
-ax.XTickLabelRotation=30;
-legend('Low Income Countries', 'Mid-Income Countries', 'High Income Countries');
-ylabel('Deaths per 100,000 Population');
-
-%print('top16','-dpng','-r300'); 
-% print 300dpi figure for report/presentation
-%% Bar graph of sorted COD
+%% Bar graph of sorted COD, top 16
 figure;
 hold on;
 totalCOD = compiledCOD(LowIncomeCOD, MidIncomeCOD, HighIncomeCOD);
@@ -91,3 +63,31 @@ ax.XTickLabelRotation=40;
 title('Top 16 Causes of Death in Low, Middle and High Income Countries');
 legend('Low Income Countries', 'Mid-Income Countries', 'High Income Countries');
 ylabel('Deaths per 100,000 Population');
+print('top_16_bar','-dpng','-r300');
+%% top communicable diseases deaths
+stddev=[1:3, 5:158];
+% removed 'all causes'
+% the stddev still will be inflated a little bit but the difference is
+% still significant for the causes we are looking at
+
+figure;
+hold on;
+Communicable = TopDeathIndex([3; 4; 7; 13; 14]);
+errorlow = std(str2double(LowIncomeCOD(stddev, 3)) );
+errorbar(str2double(LowIncomeCOD(Communicable, 3)), errorlow*ones(size(Communicable)), 'rs-');
+
+errormid = std(MidIncomeCOD(stddev) );
+errorbar(MidIncomeCOD(Communicable), errormid*ones(size(Communicable)), 'b^-');
+
+errorhigh = std(str2double(HighIncomeCOD(stddev, 3)) );
+errorbar(str2double(HighIncomeCOD(Communicable, 3)), errorhigh*ones(size(Communicable)), 'go-');
+
+set(gca,'xdir','reverse')
+ax = gca;
+ax.XTick = [1:numel(Communicable)];
+set(gca,'XTickLabel',LowIncomeCOD(Communicable, 2))
+ax.XTickLabelRotation=15;
+title('Top Communicable Diseases Deaths');
+legend('Low Income Countries', 'Mid-Income Countries', 'High Income Countries');
+ylabel('Deaths per 100,000 Population');
+print('top_16_communicable','-dpng','-r300');
